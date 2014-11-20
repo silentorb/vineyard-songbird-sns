@@ -1,0 +1,36 @@
+{
+  "tables": {
+    "push_target": {
+      "primary_keys": ["user", "device_id"],
+      "properties":{
+        "device_id": {
+          "unique": true
+        }
+      }
+    }
+  },
+  "trellises": {
+    "push_target": {
+      "primary_key": "user",
+      "properties": {
+        "user": {
+          "type": "reference",
+          "trellis": "user"
+        },
+        "device_id": {
+          "type": "string"
+        },
+        "endpoint": {
+          "type": "string"
+        },
+        "platform": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "datetime",
+          "insert": "created"
+        }
+      }
+    }
+  }
+}
