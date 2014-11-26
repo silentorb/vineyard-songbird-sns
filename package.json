@@ -5,6 +5,10 @@
   "main": "vineyard-songbird-sns.js",
   "author": "Christopher W. Johnson",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/silentorb/vineyard-songbird-sns"
+  },
   "dependencies": {
     "sns-mobile": "1.0.x"
   },
