@@ -90,7 +90,7 @@ class Songbird_SNS extends Vineyard.Bulb {
     var def = when.defer()
     platform.deleteUser(endpoint, (error) => {
       if (error) {
-        console.log(error)
+        console.error(error)
         def.reject(error)
       }
       else {
@@ -108,7 +108,7 @@ class Songbird_SNS extends Vineyard.Bulb {
     })
     platform.addUser(device_id, data, (error, endpoint)=> {
       if (error) {
-        console.log(error)
+        console.error(error)
         def.reject(error)
         return
       }
@@ -222,7 +222,7 @@ class Songbird_SNS extends Vineyard.Bulb {
     console.log("sending sns:", json)
     this.publish(platform, endpoint, json, (error, message_id)=> {
       if (error) {
-        console.log("sns error: ", error)
+        console.error("sns error: ", error)
         def.reject(error)
       }
       else {

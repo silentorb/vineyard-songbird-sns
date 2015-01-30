@@ -85,7 +85,7 @@ var Songbird_SNS = (function (_super) {
         var def = when.defer();
         platform.deleteUser(endpoint, function (error) {
             if (error) {
-                console.log(error);
+                console.error(error);
                 def.reject(error);
             } else {
                 def.resolve();
@@ -103,7 +103,7 @@ var Songbird_SNS = (function (_super) {
         });
         platform.addUser(device_id, data, function (error, endpoint) {
             if (error) {
-                console.log(error);
+                console.error(error);
                 def.reject(error);
                 return;
             }
@@ -219,7 +219,7 @@ var Songbird_SNS = (function (_super) {
         console.log("sending sns:", json);
         this.publish(platform, endpoint, json, function (error, message_id) {
             if (error) {
-                console.log("sns error: ", error);
+                console.error("sns error: ", error);
                 def.reject(error);
             } else {
                 console.log('message pushed to endpoint ' + endpoint);
