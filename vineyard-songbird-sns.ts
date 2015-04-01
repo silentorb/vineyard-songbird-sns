@@ -88,12 +88,14 @@ class Songbird_SNS extends Vineyard.Bulb {
 
   private delete_endpoint(endpoint:string, platform):Promise {
     var def = when.defer()
+    console.log('deleting endpoint', endpoint)
     platform.deleteUser(endpoint, (error) => {
       if (error) {
         console.error(error)
         def.reject(error)
       }
       else {
+        console.log('endpoint deleted', arguments)
         def.resolve()
       }
     })
@@ -102,13 +104,14 @@ class Songbird_SNS extends Vineyard.Bulb {
   }
 
   private create_endpoint(user, platform, device_id:string):Promise {
+    console.log('creating endpoint', device_id)
     var def = when.defer()
     var data = JSON.stringify({
       userId: user.id
     })
     platform.addUser(device_id, data, (error, endpoint)=> {
       if (error) {
-        console.error(error)
+        console.error('Error creating SNS endpoint', error)
         def.reject(error)
         return
       }
@@ -176,6 +179,7 @@ class Songbird_SNS extends Vineyard.Bulb {
           return this.create_endpoint(user, platform, device_id)
         }
       })
+      .catch((error)=> console.error('SNS register error:', error))
   }
 
   send(user, message, data, badge):Promise {
@@ -187,6 +191,7 @@ class Songbird_SNS extends Vineyard.Bulb {
 
         return when.all(rows.map((row)=> this.send_to_endpoint(row.platform, row.endpoint, message, data, badge)))
       })
+      .catch((error)=> console.error('SNS send error:', error))
   }
 
   private send_to_endpoint(platform_name:string, endpoint:string, message, data, badge) {

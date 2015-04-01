@@ -83,11 +83,13 @@ var Songbird_SNS = (function (_super) {
 
     Songbird_SNS.prototype.delete_endpoint = function (endpoint, platform) {
         var def = when.defer();
+        console.log('deleting endpoint', endpoint);
         platform.deleteUser(endpoint, function (error) {
             if (error) {
                 console.error(error);
                 def.reject(error);
             } else {
+                console.log('endpoint deleted', arguments);
                 def.resolve();
             }
         });
@@ -97,13 +99,14 @@ var Songbird_SNS = (function (_super) {
 
     Songbird_SNS.prototype.create_endpoint = function (user, platform, device_id) {
         var _this = this;
+        console.log('creating endpoint', device_id);
         var def = when.defer();
         var data = JSON.stringify({
             userId: user.id
         });
         platform.addUser(device_id, data, function (error, endpoint) {
             if (error) {
-                console.error(error);
+                console.error('Error creating SNS endpoint', error);
                 def.reject(error);
                 return;
             }
@@ -171,6 +174,8 @@ var Songbird_SNS = (function (_super) {
             } else {
                 return _this.create_endpoint(user, platform, device_id);
             }
+        }).catch(function (error) {
+            return console.error('SNS register error:', error);
         });
     };
 
@@ -184,6 +189,8 @@ var Songbird_SNS = (function (_super) {
             return when.all(rows.map(function (row) {
                 return _this.send_to_endpoint(row.platform, row.endpoint, message, data, badge);
             }));
+        }).catch(function (error) {
+            return console.error('SNS send error:', error);
         });
     };
 
